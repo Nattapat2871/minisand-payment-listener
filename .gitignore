@@ -1,0 +1,31 @@
+# เครื่องมือ Build ของ Android
+*.apk
+*.ap_
+*.aab
+*.dex
+*.class
+
+# โฟลเดอร์ที่โปรแกรมแอนดรอยด์สร้างขึ้นตอนกด Run
+bin/
+gen/
+build/
+app/build/
+out/
+
+# ไฟล์ตั้งค่าที่อิงตามคอมพิวเตอร์แต่ละเครื่อง (ห้ามอัปโหลด!)
+local.properties
+captures/
+
+# ไฟล์แคชและโปรไฟล์ของ IntelliJ IDEA / Android Studio
+.idea/
+*.iml
+*.iws
+.gradle/
+
+# ไฟล์ระบบของ OS ต่างๆ
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ไฟล์ Log
+*.log
