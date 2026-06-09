@@ -4,13 +4,13 @@ plugins {
 }
 
 android {
-    namespace = "com.nattapat2871.truemoneylistener"
+    namespace = "com.nattapat2871.minisandkpluslistener"
     compileSdk {
         version = release(36)
     }
 
     defaultConfig {
-        applicationId = "com.nattapat2871.truemoneylistener"
+        applicationId = "com.nattapat2871.minisandkpluslistener"
         minSdk = 24
         targetSdk = 36
         versionCode = 1

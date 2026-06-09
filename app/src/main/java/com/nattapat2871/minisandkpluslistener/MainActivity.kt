@@ -1,4 +1,4 @@
-package com.nattapat2871.truemoneylistener
+package com.nattapat2871.minisandkpluslistener
 
 import android.Manifest
 import android.content.ComponentName
@@ -42,7 +42,7 @@ class MainActivity : ComponentActivity() {
         }
 
         val testButton = Button(this).apply {
-            text = "ทดสอบยิง API"
+            text = "ทดสอบยิง API (K PLUS)"
         }
 
         layout.addView(amountInput)
@@ -78,18 +78,15 @@ class MainActivity : ComponentActivity() {
     private fun testSendApi(amount: String) {
         thread {
             try {
-                val url = URL("https://donate.nattapat2871.me/api/payment/notify")
+                val url = URL("https://minisand-payment.nattapat2871.me/api/kplus/paymentnotify?key=minisandtw888")
                 val connection = url.openConnection() as HttpURLConnection
                 connection.requestMethod = "POST"
                 connection.setRequestProperty("Content-Type", "application/json; utf-8")
-
-                // ---- แนบรหัส API Key ตรงนี้ครับ ----
-                connection.setRequestProperty("X-API-Key", "RIMURUSAMAISTHEBEST")
-                // ---------------------------------
+                connection.setRequestProperty("Accept", "application/json")
 
                 connection.doOutput = true
 
-                val jsonInputString = "{\"title\": \"ทดสอบผ่านแอป\", \"text\": \"คุณได้รับเงิน ฿ $amount ผ่าน พร้อมเพย์\"}"
+                val jsonInputString = "{\"title\": \"K PLUS (Test)\", \"text\": \"เงินเข้า ฿ $amount\", \"bank\": \"KPLUS\", \"amount\": \"$amount\", \"player\": \"tester\"}"
 
                 OutputStreamWriter(connection.outputStream).use { it.write(jsonInputString) }
                 val responseCode = connection.responseCode
@@ -97,8 +94,6 @@ class MainActivity : ComponentActivity() {
                 runOnUiThread {
                     if (responseCode == 200) {
                         Toast.makeText(this, "✅ ส่งยอด $amount สำเร็จ", Toast.LENGTH_SHORT).show()
-                    } else if (responseCode == 401) {
-                        Toast.makeText(this, "❌ ล้มเหลว: รหัสไม่ถูกต้อง (401)", Toast.LENGTH_SHORT).show()
                     } else {
                         Toast.makeText(this, "❌ ล้มเหลว: $responseCode", Toast.LENGTH_SHORT).show()
                     }

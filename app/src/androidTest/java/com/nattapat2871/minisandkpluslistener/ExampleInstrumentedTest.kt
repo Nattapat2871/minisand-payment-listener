@@ -1,4 +1,4 @@
-package com.nattapat2871.truemoneylistener
+package com.nattapat2871.minisandkpluslistener
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -19,6 +19,6 @@ class ExampleInstrumentedTest {
     fun useAppContext() {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
-        assertEquals("com.nattapat2871.truemoneylistener", appContext.packageName)
+        assertEquals("com.nattapat2871.minisandkpluslistener", appContext.packageName)
     }
 }

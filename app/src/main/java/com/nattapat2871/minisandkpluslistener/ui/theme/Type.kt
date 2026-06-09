@@ -1,4 +1,4 @@
-package com.nattapat2871.truemoneylistener.ui.theme
+package com.nattapat2871.minisandkpluslistener.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
