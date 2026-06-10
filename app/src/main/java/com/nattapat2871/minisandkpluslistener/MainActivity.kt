@@ -27,39 +27,49 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // --- สร้างหน้าจอ UI ---
         val layout = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
             gravity = Gravity.CENTER
             setPadding(50, 50, 50, 50)
         }
 
-        // ช่องกรอกยอดเงิน
         val amountInput = EditText(this).apply {
             hint = "กรอกยอดเงินที่จะทดสอบ (เช่น 20.01)"
             inputType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_DECIMAL
             textSize = 18f
         }
 
-        val testButton = Button(this).apply {
+        val kplusButton = Button(this).apply {
             text = "ทดสอบยิง API (K PLUS)"
         }
 
+        val tmButton = Button(this).apply {
+            text = "ทดสอบยิง API (TrueMoney)"
+        }
+
         layout.addView(amountInput)
-        layout.addView(testButton)
+        layout.addView(kplusButton)
+        layout.addView(tmButton)
         setContentView(layout)
 
-        testButton.setOnClickListener {
+        kplusButton.setOnClickListener {
             val amount = amountInput.text.toString()
             if (amount.isNotEmpty()) {
-                Toast.makeText(this, "กำลังส่งยอด $amount...", Toast.LENGTH_SHORT).show()
-                testSendApi(amount)
+                testSendApi("KPLUS", amount)
             } else {
                 Toast.makeText(this, "กรุณากรอกยอดเงินก่อน", Toast.LENGTH_SHORT).show()
             }
         }
 
-        // --- ขอสิทธิ์ต่างๆ ---
+        tmButton.setOnClickListener {
+            val amount = amountInput.text.toString()
+            if (amount.isNotEmpty()) {
+                testSendApi("TRUEMONEY", amount)
+            } else {
+                Toast.makeText(this, "กรุณากรอกยอดเงินก่อน", Toast.LENGTH_SHORT).show()
+            }
+        }
+
         checkPermissions()
     }
 
@@ -75,25 +85,25 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    private fun testSendApi(amount: String) {
+    private fun testSendApi(type: String, amount: String) {
         thread {
             try {
-                val url = URL("https://minisand-payment.nattapat2871.me/api/kplus/paymentnotify?key=minisandtw888")
+                val endpoint = if (type == "KPLUS") "/api/kplus/paymentnotify" else "/api/truemoney/listener"
+                val url = URL("https://minisand-payment.nattapat2871.me$endpoint?key=minisandtw888")
                 val connection = url.openConnection() as HttpURLConnection
                 connection.requestMethod = "POST"
                 connection.setRequestProperty("Content-Type", "application/json; utf-8")
                 connection.setRequestProperty("Accept", "application/json")
-
                 connection.doOutput = true
 
-                val jsonInputString = "{\"title\": \"K PLUS (Test)\", \"text\": \"เงินเข้า ฿ $amount\", \"bank\": \"KPLUS\", \"amount\": \"$amount\", \"player\": \"tester\"}"
+                val jsonInputString = "{\"title\": \"$type (Test)\", \"text\": \"ได้รับเงินโอนจำนวน $amount บาท\", \"bank\": \"$type\", \"amount\": \"$amount\", \"player\": \"tester\"}"
 
                 OutputStreamWriter(connection.outputStream).use { it.write(jsonInputString) }
                 val responseCode = connection.responseCode
 
                 runOnUiThread {
                     if (responseCode == 200) {
-                        Toast.makeText(this, "✅ ส่งยอด $amount สำเร็จ", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, "✅ ส่งยอด $amount ($type) สำเร็จ", Toast.LENGTH_SHORT).show()
                     } else {
                         Toast.makeText(this, "❌ ล้มเหลว: $responseCode", Toast.LENGTH_SHORT).show()
                     }
